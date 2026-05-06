@@ -1,0 +1,5 @@
+.colorPicker {
+  display: flex;
+  gap: 6px;
+  margin-right: 16px;
+}

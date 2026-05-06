@@ -1,0 +1,35 @@
+.zone {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: var(--trash-zone-width);
+  height: var(--trash-zone-height);
+  border: 2px dashed var(--color-trash-idle-border);
+  background: var(--color-trash-idle-bg);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 11px;
+  /* Stays a passive drop zone — no pointer events of its own. We detect
+     overlap via elementsFromPoint while a note is being moved. */
+  pointer-events: none;
+  transition:
+    background 100ms ease-out,
+    border-color 100ms ease-out,
+    color 100ms ease-out;
+}
+
+.active {
+  background: var(--color-trash-active-bg);
+  border-color: var(--color-trash-active-border);
+  color: var(--color-trash-active-border);
+}
+
+.label {
+  user-select: none;
+}

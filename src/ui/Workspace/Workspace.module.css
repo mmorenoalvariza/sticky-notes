@@ -1,0 +1,11 @@
+.workspace {
+  position: relative;
+  flex: 1 1 auto;
+  /* Subtle dotted background to imply a board/canvas. */
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--color-bg);
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}

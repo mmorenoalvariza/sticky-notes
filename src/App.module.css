@@ -1,0 +1,10 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  /* Spec calls for the app to work at 1024x768 minimum; we don't force a
+     minimum width on the container so dev-tools / smaller windows keep
+     resizing the workspace fluidly. Notes are clamped back into the visible
+     workspace by a ResizeObserver in Workspace.tsx. */
+}

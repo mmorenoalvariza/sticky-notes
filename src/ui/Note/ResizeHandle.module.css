@@ -1,0 +1,23 @@
+.handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--resize-handle-size);
+  height: var(--resize-handle-size);
+  cursor: nwse-resize;
+  /* Diagonal line "grippy" hint, pure CSS. */
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0.35) 60%,
+      transparent 60%,
+      transparent 75%,
+      rgba(0, 0, 0, 0.35) 75%,
+      rgba(0, 0, 0, 0.35) 85%,
+      transparent 85%
+    );
+  touch-action: none;
+}

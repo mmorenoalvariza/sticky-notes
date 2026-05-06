@@ -1,0 +1,7 @@
+.marquee {
+  position: absolute;
+  border: 1.5px dashed var(--color-marquee-border);
+  border-radius: var(--note-radius);
+  opacity: 0.6;
+  pointer-events: none;
+}

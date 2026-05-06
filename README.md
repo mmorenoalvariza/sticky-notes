@@ -80,30 +80,47 @@ on hydrate; corrupted or older-version data is silently discarded so the UI neve
 
 ## Project layout
 
+One folder per component under `src/ui/`. Each folder co-locates the
+component's `.tsx`, its scoped `.module.css`, any private sub-components,
+and an `index.ts` barrel so callers import the folder rather than a
+specific file inside it.
+
 ```
 src/
-├── App.tsx                 composition root + persistence bridge
-├── main.tsx                React entry
+├── main.tsx                       React entry
+├── App.tsx                        composition root only
+├── App.module.css
 ├── styles/
 │   ├── reset.css
-│   └── tokens.css          design tokens (colors, sizes)
-├── notes/
-│   ├── types.ts            Note, DragSession, State, Action
-│   ├── reducer.ts          pure (State, Action) => State
-│   ├── persistence.ts      localStorage load/save with validation
-│   └── NotesContext.tsx    Provider + useNotesState/useNotesDispatch
+│   └── tokens.css                 design tokens (colors, sizes)
+├── notes/                         domain (types + reducer) + React adapters
+│   ├── types.ts                   Note, DragSession, State, Action
+│   ├── reducer.ts                 pure (State, Action) => State
+│   ├── persistence.ts             localStorage load/save with validation
+│   ├── NotesContext.tsx           Provider + useNotesState / useNotesDispatch
+│   └── PersistenceBridge.tsx      side-effect-only: writes state to localStorage
 ├── ui/
-│   ├── Workspace.tsx       canvas + create-marquee drag
-│   ├── Note.tsx            move drag, edit-text, color, opacity-while-over-trash
-│   ├── ResizeHandle.tsx    resize drag (corner)
-│   ├── Marquee.tsx         dashed rectangle while creating
-│   ├── TrashZone.tsx       highlight when a note is overhead
-│   ├── Toolbar.tsx         color picker + usage hint
-│   └── *.module.css        scoped styles per component
+│   ├── Workspace/                 canvas + create-marquee drag + ResizeObserver clamp
+│   ├── Note/                      move drag, edit-text, color, over-trash opacity
+│   │   ├── Note.tsx
+│   │   ├── Note.module.css
+│   │   ├── ResizeHandle.tsx       private sub-component (corner drag)
+│   │   ├── ResizeHandle.module.css
+│   │   └── index.ts
+│   ├── Marquee/                   dashed rectangle while creating
+│   ├── TrashZone/                 highlight when a note is over it
+│   └── Toolbar/                   header + ColorPicker + usage hint
+│       ├── Toolbar.tsx
+│       ├── Toolbar.module.css
+│       ├── ColorPicker.tsx        radiogroup wrapper around the swatches
+│       ├── ColorPicker.module.css
+│       ├── ColorSwatch.tsx        individual color button
+│       ├── ColorSwatch.module.css
+│       └── index.ts
 └── lib/
-    ├── usePointerDrag.ts   pointer-capture drag hook with rAF coalescing
-    ├── geometry.ts         normalizeRect, rectArea, clamp
-    └── id.ts               crypto.randomUUID with fallback
+    ├── usePointerDrag.ts          pointer-capture drag hook with rAF coalescing
+    ├── geometry.ts                normalizeRect, rectArea, clamp
+    └── id.ts                      crypto.randomUUID with fallback
 ```
 
 ## Decisions and trade-offs
@@ -127,6 +144,14 @@ src/
   cross-device-friendly should the app ever need to sync.
 - **CSS modules.** Scoped, zero-runtime, no extra dependency.
 
+## Responsiveness
+
+The app works fluidly down to 1024×768 (the spec minimum) and survives smaller widths
+(e.g. when devtools opens). A `ResizeObserver` on the workspace dispatches a
+`CLAMP_TO_VIEWPORT` action whenever its box changes, so notes that would otherwise be
+clipped by `overflow: hidden` are pulled back inside the visible area. The clamp only
+moves notes — it never shrinks them — because resizing is a manual action.
+
 ## Known limitations / what I'd add with more time
 
 - **Tests for the reducer.** Reducer is pure; would add Vitest tests covering the
@@ -136,6 +161,3 @@ src/
   drag-to-move/resize/trash has no keyboard equivalent.
 - **Undo/redo.** Easy to add given the reducer shape: stack of past `State`s, but
   out of scope for the time budget.
-- **Bounds clamping during move.** A note can currently be dragged off the bottom or
-  right edges of the workspace. Adding a clamp against the workspace rect at drag-end
-  would be a one-liner.

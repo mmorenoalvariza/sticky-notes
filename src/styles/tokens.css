@@ -1,0 +1,31 @@
+/* Design tokens. Single source of truth for colors and sizing. */
+
+:root {
+  --color-bg: #f4f5f7;
+  --color-text: #1f2328;
+  --color-text-muted: #6b7280;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-shadow: rgba(0, 0, 0, 0.18);
+  --color-marquee: rgba(56, 132, 255, 0.25);
+  --color-marquee-border: #3884ff;
+  --color-trash-idle-bg: rgba(0, 0, 0, 0.04);
+  --color-trash-idle-border: rgba(0, 0, 0, 0.18);
+  --color-trash-active-bg: rgba(220, 38, 38, 0.12);
+  --color-trash-active-border: #dc2626;
+
+  /* Sticky note palette: warm pastel tones. */
+  --note-yellow: #fef08a;
+  --note-pink: #fbcfe8;
+  --note-blue: #bfdbfe;
+  --note-green: #bbf7d0;
+  --note-lavender: #ddd6fe;
+
+  --note-min-width: 60px;
+  --note-min-height: 40px;
+  --note-radius: 4px;
+  --resize-handle-size: 14px;
+
+  --toolbar-height: 48px;
+  --trash-zone-width: 200px;
+  --trash-zone-height: 120px;
+}
